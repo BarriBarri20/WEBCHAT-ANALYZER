@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+        <title>Document</title>
+</head>
+<body id="bodyElement">
+
+    <div class="bg-white min-h-screen relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden">
+          <div class="absolute top-0 left-0 w-[50%] h-[50%] bg-blue-500 rounded-full mix-blend-multiply filter blur-[200px]"></div>
+          <div class="absolute bottom-0 right-0 w-[60%] h-[60%] bg-red-500 rounded-full mix-blend-multiply filter blur-[200px]"></div>
+          <div class="absolute top-0 right-0 w-[40%] h-[40%] bg-green-500 rounded-full mix-blend-multiply filter blur-[200px]"></div>
+          <div class="absolute bottom-0 left-0 w-[30%] h-[30%] bg-yellow-500 rounded-full mix-blend-multiply filter blur-[200px]"></div>
+        </div>
+        <header class="flex justify-between p-6 bg-transparent text-black">
+          <div>
+            <h1 class="font-bold text-2xl">Colorful Motifs</h1>
+          </div>
+          <div class="space-x-4">
+
+          </div>
+        </header>
+        <main class="p-6 flex items-center justify-center h-[50vh]">
+          <h2 class="text-6xl font-bold text-center text-black">A Grand Movie Title</h2>
+        </main>
+        <section class="mt-10 mb-10 px-6">
+          <p class="font-normal text-lg text-black mb-4">Here's a thought to enrich your day:</p>
+          <blockquote class="border-l-4 border-black pl-4 italic text-lg text-black">
+              "The only way to do great work is to love what you do." - Steve Jobs
+          </blockquote>
+          <div class="mt-6 flex flex-col items-center">
+              <label class="block text-lg font-medium text-black mb-2" for="mood">
+                  How are you feeling right now? And what language do you speak?
+              </label>
+              <form id="moodForm">
+                      <input
+                          id="mood"
+                          class="border-2 border-black px-3 py-2 mb-3 w-50 shadow-2xl rounded-full"
+                          placeholder="Enter your mood"
+                          style="transform: perspective(1px) translateZ(0px);"
+                          type="text"
+                          data-ddg-inputtype="unknown"
+                      />
+
+
+                      <button type="submit" class="bg-black text-white px-5 py-2 rounded" hidden></button>
+                  </div>
+              </form>
+          </div>
+      </section>
+        <footer class="p-6 bg-transparent text-black text-center">
+          <p>© 2023 Colorful Motifs</p>
+        </footer>
+      </div>
+    <script>
+        document.getElementById('moodForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get the mood input value
+            const mood = document.getElementById('mood').value;
+
+            // Make a GET request to the endpoint with the mood data
+                fetch(`http://127.0.0.1:5000/get_choices?mood=${encodeURIComponent(mood)}`)
+                .then(response => response.json()) // Assuming the response is JSON
+                .then(data => {
+                    console.log('Success:', data);
+                    // Display the response in the HTML
+                    document.getElementById('bodyElement').innerHTML = `${data["html"].replace(/\\/g, '')}`;
+                })
+                .catch(error => {
+                    // Handle any errors
+                    console.error('Error:', error);
+                    document.getElementById('bodyElement').innerHTML = `${error}`;
+                });
+        });
+    </script>
+        </body>
+
+</html>
